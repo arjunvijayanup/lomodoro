@@ -1,0 +1,22 @@
+{
+    "manifest_version": 3,
+    "name": "Lomodoro",
+    "version": 1.0,
+    "description": "Pomodoro timer with Lofi and ambient Sounds",
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": "icons/icon48.png"
+    },
+    "background": {
+        "service_worker": "background.js"
+    },
+    "permsission": [
+        "storage",
+        "alarms",
+        "notifications"
+    ],
+    "icons": {
+        "48": "icons/icon48.png",
+        "128": "icons/icon128.png"
+    }
+}

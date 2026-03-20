@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lomodoro</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+
+    <div class="container">
+
+      <!-- Header -->
+      <h1 class="app-title">Lomodoro</h1>
+
+      <!-- Session label: shows "Work" or "Break" -->
+      <p class="session-label" id="session-label">Work Session</p>
+
+      <!-- The big countdown display -->
+      <div class="timer-display" id="timer-display">25:00</div>
+
+      <!-- Timer control buttons -->
+      <div class="timer-controls">
+        <button class="btn btn-primary" id="start-btn">Start</button>
+        <button class="btn btn-secondary" id="reset-btn">Reset</button>
+      </div>
+
+      <!-- Music source tabs -->
+      <div class="tabs">
+        <button class="tab active" id="tab-youtube">Lofi Girl</button>
+        <button class="tab" id="tab-ambient">Ambient</button>
+        <button class="tab" id="tab-spotify">Spotify</button>
+      </div>
+
+      <!-- YouTube panel (visible by default) -->
+      <div class="panel" id="panel-youtube">
+        <p class="panel-desc">Lofi Girl live stream</p>
+        <div class="music-controls">
+          <button class="btn btn-music" id="yt-play-btn">Play</button>
+          <input type="range" id="yt-volume" min="0" max="100" value="50" />
+        </div>
+        <!-- Hidden YouTube iframe - audio only, no visible video -->
+        <iframe
+          id="yt-player"
+          src="https://www.youtube.com/embed/jfKfPfyJRdk?enablejsapi=1&autoplay=0"
+          allow="autoplay"
+          style="display:none;"
+        ></iframe>
+      </div>
+
+      <!-- Ambient panel (hidden by default) -->
+      <div class="panel hidden" id="panel-ambient">
+        <p class="panel-desc">Mix ambient sounds</p>
+        <div class="ambient-row">
+          <span>Rain</span>
+          <input type="range" class="ambient-vol" id="vol-rain" min="0" max="100" value="0" />
+        </div>
+        <div class="ambient-row">
+          <span>Ocean</span>
+          <input type="range" class="ambient-vol" id="vol-ocean" min="0" max="100" value="0" />
+        </div>
+        <div class="ambient-row">
+          <span>Brown noise</span>
+          <input type="range" class="ambient-vol" id="vol-noise" min="0" max="100" value="0" />
+        </div>
+      </div>
+
+      <!-- Spotify panel (hidden by default) -->
+      <div class="panel hidden" id="panel-spotify">
+        <p class="panel-desc">Spotify (Premium required)</p>
+        <button class="btn btn-primary" id="spotify-connect-btn">Connect Spotify</button>
+      </div>
+
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
