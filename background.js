@@ -1,2 +1,2 @@
 // background.js
-console.log("FocusFlow background loaded");
+console.log("Lomodoro background loaded");

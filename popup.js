@@ -1,2 +1,2 @@
 // popup.js
-console.log("FocusFlow popup loaded");
+console.log("Lomodoro popup loaded");
