@@ -160,7 +160,9 @@ resetBtn.addEventListener("click", () => {
 
 });
 
-// Youtube controls for Lofi Girl
+// ======================================================================================
+// Lofi media control
+// ======================================================================================
 
 let lofiPlaying = false;
 
@@ -191,44 +193,6 @@ ytVolume.addEventListener("input", () => {
     // Convert 0-100 slider value to 0.0-1.0 for audio element
     lofiAudio.volume = ytVolume.value / 100;
 });
-
-// Handler to send commands to youtube Iframe ("playVideo", "pauseVideo")
-/*function ytCommand(com, args = []) {
-
-    ytPlayer.contentWindow.postMessage(
-        JSON.stringify({ event: "command", func: com, args: args }),
-        "*"
-    );
-}
-
-// Play/Pause button for YT
-ytPlayBtn.addEventListener("click", () => {
-
-    if (ytPlaying) {
-
-        ytCommand("pauseVideo");
-        ytPlayBtn.textContent = "Play";
-        ytPlaying = false;
-
-    } else {
-
-        ytCommand("playVideo");
-        ytPlayBtn.textContent = "Pause";
-        ytPlaying = true;
-
-    }
-
-});
-
-// Volume Slider for YT
-ytVolume.addEventListener("input", () => {
-    
-    ytCommand("setVolume", [ytVolume.value]);
-
-});*/
-
-
-
 
 // Initialise on loading - make sure timer shows the correct time on load
 updateDisplay();
