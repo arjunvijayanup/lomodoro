@@ -34,18 +34,22 @@
 
       <!-- YouTube panel (visible by default) -->
       <div class="panel" id="panel-youtube">
-        <p class="panel-desc">Lofi Girl live stream</p>
+        <p class="panel-desc">Lofi stream</p>
         <div class="music-controls">
           <button class="btn btn-music" id="yt-play-btn">Play</button>
           <input type="range" id="yt-volume" min="0" max="100" value="50" />
         </div>
+        <audio id="lofi-audio" preload="none">
+          <source src="https://streams.ilovemusic.de/iloveradio17.mp3" type="audio/mpeg" />
+        </audio>
         <!-- Hidden YouTube iframe - audio only, no visible video -->
-        <iframe
+        <!--iframe
           id="yt-player"
-          src="https://www.youtube.com/embed/jfKfPfyJRdk?enablejsapi=1&autoplay=0"
-          allow="autoplay"
-          style="display:none;"
-        ></iframe>
+          src="https://www.youtube.com/embed/jfKfPfyJRdk?enablejsapi=1&autoplay=0&origin=chrome-extension://gjlckpkkpiboendmbcmadcbnbjhgbofp"
+          allow="autoplay; encrypted-media"
+          allowfullscreen
+          style="width:1px; height:1px; opacity:0; position:absolute; pointer-events:none;"
+        ></iframe-->
       </div>
 
       <!-- Ambient panel (hidden by default) -->
