@@ -77,7 +77,7 @@ async function ensureOffScreen() {
 
     if (offScreenCreating) return offScreenCreating;
 
-    offScreenCreating = await chrome.offscreen.createDocument({
+    offScreenCreating = chrome.offscreen.createDocument({
 
         url: "offscreen.html",
         reasons: ["AUDIO_PLAYBACK"],
@@ -100,14 +100,14 @@ function sessionEnd() {
     isWorkSession = !isWorkSession;
     timeLeft = isWorkSession? WORK_DURATION : BREAK_DURATION;
 
+    // Volume ducking update for saveState() capture
+    if (lofiPlaying) lofiVolume = isWorkSession ? userVolume : 15;
+
     // Auto start timer upon session end
     startTimer();
 
-    // Volume ducking
+    // Volume ducking update to offscreen
     if (lofiPlaying) {
-
-        lofiVolume = !isWorkSession ? 15 : userVolume;
-        saveState();
 
         ensureOffScreen().then( () => {
             

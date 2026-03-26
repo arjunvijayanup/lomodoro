@@ -94,7 +94,13 @@ function updateDisplay(state) {
 // Request background.js for current state and update display
 function syncWithBackground() {
 
-    chrome.runtime.sendMessage( { type: "GET_STATE" }, (response) => { if (response) updateDisplay(response); } );
+    chrome.runtime.sendMessage( { type: "GET_STATE" }, (response) => { 
+
+        if (chrome.runtime.lastError) return;
+        
+        if (response) updateDisplay(response); 
+    
+    } );
 
 }
 
@@ -102,6 +108,8 @@ function syncWithBackground() {
 startBtn.addEventListener("click", () => {
 
     chrome.runtime.sendMessage( { type: "GET_STATE" }, (response) => { 
+
+        if (chrome.runtime.lastError) return;
 
         if (response && response.isRunning) {
 
@@ -135,6 +143,8 @@ resetBtn.addEventListener("click", () => {
 ytPlayBtn.addEventListener("click", () => {
 
     chrome.runtime.sendMessage({ type: "GET_STATE" }, (response) => {
+
+        if (chrome.runtime.lastError) return;
 
         if (response && response.lofiPlaying) {
 
