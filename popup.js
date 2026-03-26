@@ -14,8 +14,6 @@ const tabAmbient = document.getElementById("tab-ambient");
 const tabSpotify = document.getElementById("tab-spotify");
 const ytPlayBtn = document.getElementById("yt-play-btn");
 const ytVolume = document.getElementById("yt-volume");
-// const ytPlayer = document.getElementById("yt-player");
-
 
 // Tab switching and highlighting
 function switchTab(tabName) {
@@ -61,16 +59,6 @@ tabSpotify.addEventListener("click", () => switchTab("spotify"));
 // Pomodoro Timer Logic
 // ======================================================================================
 
-// Work and rest times
-// const WORK_DURATION = 1500; // 25 x 60 seconds
-// const BREAK_DURATION = 300; // 5 x 60 seconds
-
-// Current time state variables
-// let isRunning = false;
-// let isWorkSession = true;
-// let timeLeft = WORK_DURATION;
-
-
 // Time formatt handler - converts seconds into MM:SS string
 function formatTime(seconds) {
 
@@ -110,45 +98,6 @@ function syncWithBackground() {
 
 }
 
-
-// Session End handler
-// function handleSessionEnd() {
-    
-//     // Stop current session
-//     clearInterval(tickInterval);
-//     isRunning = false;
-//     startBtn.textContent = "Start";
-
-//     // Change session type
-//     isWorkSession = !isWorkSession;
-//     timeLeft = isWorkSession ? WORK_DURATION : BREAK_DURATION;
-//     updateDisplay();
-
-//     // Chrome notification to alert user
-//     chrome.notifications.create({
-//         type: "basic",
-//         iconUrl: "icons/icon128.png",
-//         title: isWorkSession ? "Break over - Get back to work!" : "Work session done - Take a break!",
-//         message: isWorkSession ? "Starting 25 minute work session." : "Starting 5 minute break"
-//     });
-
-// }
-// Tick update - called every second to update timer value
-// function tick() {
-
-//     if(timeLeft <= 0) {
-
-//         // Quit current session
-//         handleSessionEnd();
-//         return;
-
-//     }
-    
-//     timeLeft--;
-//     updateDisplay();
-
-// }
-
 // START & PAUSE button handlers
 startBtn.addEventListener("click", () => {
 
@@ -168,21 +117,6 @@ startBtn.addEventListener("click", () => {
         setTimeout(syncWithBackground, 100);
 
     });
-    // if(isRunning) {
-
-    //     // Pause if currently running
-    //     clearInterval(tickInterval);
-    //     isRunning = false;
-    //     startBtn.textContent = "Start";
-
-    // } else {
-
-    //     // Start if currently paused
-    //     tickInterval = setInterval(tick, 1000) // Called every 1000 millisecond (1 sec) to update timer
-    //     isRunning = true;
-    //     startBtn.textContent = "Pause";
-
-    // }
 
 });
 
@@ -191,24 +125,12 @@ resetBtn.addEventListener("click", () => {
 
     chrome.runtime.sendMessage( { type: "RESET_TIMER" });
     setTimeout(syncWithBackground, 100);
-    // clearInterval(tickInterval);
-    // isRunning = false;
-    // isWorkSession = true;
-    // timeLeft = WORK_DURATION;
-    // startBtn.textContent = "Start";
-    // updateDisplay();
 
 });
 
 // ======================================================================================
 // Lofi media control
 // ======================================================================================
-
-// let lofiPlaying = false;
-
-// const lofiAudio = document.getElementById("lofi-audio");
-
-// lofiAudio.volume = ytVolume.value/100;
 
 ytPlayBtn.addEventListener("click", () => {
 
@@ -228,31 +150,15 @@ ytPlayBtn.addEventListener("click", () => {
 
     });
 
-    // if (lofiPlaying) {
-
-    //     lofiAudio.pause();
-    //     ytPlayBtn.textContent = "Play";
-    //     lofiPlaying = false;
-
-    // } else {
-
-    //     lofiAudio.play();
-    //     ytPlayBtn.textContent = "Pause";
-    //     lofiPlaying = true;
-
-    // }
-
 });
 
-// Volume slider
+// Event listener for Volume slider
 ytVolume.addEventListener("input", () => {
-    // Convert 0-100 slider value to 0.0-1.0 for audio element
-    // lofiAudio.volume = ytVolume.value / 100;
+
     chrome.runtime.sendMessage({ type: "SET_VOLUME", volume: parseInt(ytVolume.value) });
 
 });
 
 // Initialise on loading - make sure timer shows the correct time on load
-// updateDisplay();
 syncWithBackground();
 const syncInterval = setInterval(syncWithBackground, 1000);
