@@ -15,6 +15,7 @@ let timeLeft = WORK_DURATION;
 let startTime = null; 
 let lofiPlaying = false;
 let lofiVolume = 50;
+let userVolume = 50;
 
 // Timer Controls //
 function startTimer() {
@@ -91,7 +92,25 @@ function sessionEnd() {
     
     isWorkSession = !isWorkSession;
     timeLeft = isWorkSession? WORK_DURATION : BREAK_DURATION;
-    saveState();
+
+    // Auto start timer upon session end
+    startTimer();
+
+    // Volume ducking
+    if (lofiPlaying) {
+
+        lofiVolume = !isWorkSession ? 15 : userVolume;
+        saveState();
+
+        ensureOffScreen().then( () => {
+            
+            chrome.runtime.sendMessage({ target: "offscreen", type: "SET_VOLUME", volume: lofiVolume });
+        
+        });
+
+    }
+
+    // saveState();
 
     chrome.notifications.create({
 
@@ -128,7 +147,7 @@ function saveState() {
 
     chrome.storage.local.set({
 
-        timerState: { isRunning, isWorkSession, timeLeft, startTime, lofiPlaying, lofiVolume }
+        timerState: { isRunning, isWorkSession, timeLeft, startTime, lofiPlaying, lofiVolume, userVolume }
 
     });
 
@@ -146,6 +165,7 @@ async function loadState() {
         startTime = result.timerState.startTime ?? null;
         lofiPlaying = result.timerState.lofiPlaying ?? false;
         lofiVolume = result.timerState.lofiVolume ?? 50;
+        userVolume = result.timerState.userVolume ?? 50;
 
         if (isRunning) {
 
@@ -205,6 +225,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === "SET_VOLUME") {
 
         lofiVolume = message.volume;
+        userVolume = message.volume;
         saveState();
         ensureOffScreen().then( () => {
 
