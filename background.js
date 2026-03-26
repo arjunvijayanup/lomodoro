@@ -2,8 +2,8 @@
 // Timer state and controls of chrome.alarms
 // Current state is read and commands are sent here from popup.js
 
-const WORK_DURATION = 5; // 25 x 60 seconds
-const BREAK_DURATION = 5; // 5 x 60 seconds
+const WORK_DURATION = 1500; // 25 x 60 seconds
+const BREAK_DURATION = 300; // 5 x 60 seconds
 
 // ======================================================================================
 // Timer State
