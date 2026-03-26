@@ -105,7 +105,9 @@ function sessionEnd() {
 }
 
 // Alarm listener
-chrome.alarms.onAlarm.addListener( (alarm) => {
+chrome.alarms.onAlarm.addListener( async (alarm) => {
+
+    await stateReady;
 
     if (alarm.name !== "timerTick") return;
 
@@ -164,7 +166,10 @@ async function loadState() {
 }
 
 // Load state when service worker starts
-loadState();
+// loadState();
+
+const stateReady = loadState();
+
 
 // Message listener for commands from popup.js
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
