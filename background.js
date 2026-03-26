@@ -26,8 +26,7 @@ function startTimer() {
 
     startTime = Date.now();
 
-    const minutesUntilEnd = getTimeLeft() / 60;
-    chrome.alarms.create("timerTick", { delayInMinutes: minutesUntilEnd }); // 1 per minute
+    chrome.alarms.create("timerTick", { delayInMinutes: getTimeLeft() / 60 });
 
     saveState();    
 
@@ -70,17 +69,24 @@ function getTimeLeft() {
 
 }
 
+let offScreenCreating = null;
+
 async function ensureOffScreen() {
 
     if (await chrome.offscreen.hasDocument()) return;
 
-    await chrome.offscreen.createDocument({
+    if (offScreenCreating) return offScreenCreating;
+
+    offScreenCreating = await chrome.offscreen.createDocument({
 
         url: "offscreen.html",
         reasons: ["AUDIO_PLAYBACK"],
         justification: "Playing lofi audio stream in the background"
 
     });
+
+    await offScreenCreating;
+    offScreenCreating = null;
 
 }
 
@@ -164,8 +170,7 @@ async function loadState() {
 
         if (isRunning) {
 
-            const remaining = getTimeLeft() / 60;
-            chrome.alarms.create("timerTick", { delayInMinutes: remaining });
+            chrome.alarms.create("timerTick", { delayInMinutes: getTimeLeft() / 60 });
 
         }
 
