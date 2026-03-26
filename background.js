@@ -26,7 +26,9 @@ function startTimer() {
 
     startTime = Date.now();
 
-    chrome.alarms.create("timerTick", { periodInMinutes: 1}); // 1 per minute
+    const minutesUntilEnd = getTimeLeft() / 60;
+    chrome.alarms.create("timerTick", { delayInMinutes: minutesUntilEnd }); // 1 per minute
+
     saveState();    
 
 }
@@ -169,7 +171,8 @@ async function loadState() {
 
         if (isRunning) {
 
-            chrome.alarms.create("timerTick", { periodInMinutes: 1 });
+            const remaining = getTimeLeft() / 60;
+            chrome.alarms.create("timerTick", { delayInMinutes: remaining });
 
         }
 
