@@ -1,4 +1,5 @@
 // popup.js
+// Communicates and sends requests to background.js
 
 // Grabbing all html elements from popup.html
 const sessionLabel = document.getElementById("session-label");
@@ -13,7 +14,7 @@ const tabAmbient = document.getElementById("tab-ambient");
 const tabSpotify = document.getElementById("tab-spotify");
 const ytPlayBtn = document.getElementById("yt-play-btn");
 const ytVolume = document.getElementById("yt-volume");
-const ytPlayer = document.getElementById("yt-player");
+// const ytPlayer = document.getElementById("yt-player");
 
 
 // Tab switching and highlighting
@@ -61,14 +62,13 @@ tabSpotify.addEventListener("click", () => switchTab("spotify"));
 // ======================================================================================
 
 // Work and rest times
-const WORK_DURATION = 1500; // 25 x 60 seconds
-const BREAK_DURATION = 300; // 5 x 60 seconds
+// const WORK_DURATION = 1500; // 25 x 60 seconds
+// const BREAK_DURATION = 300; // 5 x 60 seconds
 
 // Current time state variables
-let isRunning = false;
-let isWorkSession = true;
-let timeLeft = WORK_DURATION;
-let tickInterval = null;
+// let isRunning = false;
+// let isWorkSession = true;
+// let timeLeft = WORK_DURATION;
 
 
 // Time formatt handler - converts seconds into MM:SS string
@@ -82,81 +82,108 @@ function formatTime(seconds) {
 }
 
 // Timer display Update handler
-function updateDisplay() {
+function updateDisplay(state) {
 
-    timerDisplay.textContent = formatTime(timeLeft);
-    sessionLabel.textContent = isWorkSession ? "Work Session" : "Rest Time";
+    timerDisplay.textContent = formatTime(state.timeLeft);
+    sessionLabel.textContent = state.isWorkSession ? "Work Session" : "Rest Time";
+    startBtn.textContent = state.isRunning ? "Pause" : "Start";
 
 }
+
+// Request background.js for current state and update display
+function syncWithBackground() {
+
+    chrome.runtime.sendMessage( { type: "GET_STATE" }, (response) => { if (response) updateDisplay(response); } );
+
+}
+
 
 // Session End handler
-function handleSessionEnd() {
+// function handleSessionEnd() {
     
-    // Stop current session
-    clearInterval(tickInterval);
-    isRunning = false;
-    startBtn.textContent = "Start";
+//     // Stop current session
+//     clearInterval(tickInterval);
+//     isRunning = false;
+//     startBtn.textContent = "Start";
 
-    // Change session type
-    isWorkSession = !isWorkSession;
-    timeLeft = isWorkSession ? WORK_DURATION : BREAK_DURATION;
-    updateDisplay();
+//     // Change session type
+//     isWorkSession = !isWorkSession;
+//     timeLeft = isWorkSession ? WORK_DURATION : BREAK_DURATION;
+//     updateDisplay();
 
-    // Chrome notification to alert user
-    chrome.notifications.create({
-        type: "basic",
-        iconUrl: "icons/icon128.png",
-        title: isWorkSession ? "Break over - Get back to work!" : "Work session done - Take a break!",
-        message: isWorkSession ? "Starting 25 minute work session." : "Starting 5 minute break"
-    });
+//     // Chrome notification to alert user
+//     chrome.notifications.create({
+//         type: "basic",
+//         iconUrl: "icons/icon128.png",
+//         title: isWorkSession ? "Break over - Get back to work!" : "Work session done - Take a break!",
+//         message: isWorkSession ? "Starting 25 minute work session." : "Starting 5 minute break"
+//     });
 
-}
+// }
 // Tick update - called every second to update timer value
-function tick() {
+// function tick() {
 
-    if(timeLeft <= 0) {
+//     if(timeLeft <= 0) {
 
-        // Quit current session
-        handleSessionEnd();
-        return;
+//         // Quit current session
+//         handleSessionEnd();
+//         return;
 
-    }
+//     }
     
-    timeLeft--;
-    updateDisplay();
+//     timeLeft--;
+//     updateDisplay();
 
-}
+// }
 
 // START & PAUSE button handlers
 startBtn.addEventListener("click", () => {
 
-    if(isRunning) {
+    chrome.runtime.sendMessage( { type: "GET_STATE" }, (response) => { 
 
-        // Pause if currently running
-        clearInterval(tickInterval);
-        isRunning = false;
-        startBtn.textContent = "Start";
+        if (response && response.isRunning) {
 
-    } else {
+            chrome.runtime.sendMessage( { type: "PAUSE_TIMER" } );
 
-        // Start if currently paused
-        tickInterval = setInterval(tick, 1000) // Called every 1000 millisecond (1 sec) to update timer
-        isRunning = true;
-        startBtn.textContent = "Pause";
+        } else {
 
-    }
+            chrome.runtime.sendMessage( { type: "START_TIMER" } );
+
+        }
+        
+        // Setting slight Delay to allow background update
+        setTimeout(syncWithBackground, 50);
+
+    });
+    // if(isRunning) {
+
+    //     // Pause if currently running
+    //     clearInterval(tickInterval);
+    //     isRunning = false;
+    //     startBtn.textContent = "Start";
+
+    // } else {
+
+    //     // Start if currently paused
+    //     tickInterval = setInterval(tick, 1000) // Called every 1000 millisecond (1 sec) to update timer
+    //     isRunning = true;
+    //     startBtn.textContent = "Pause";
+
+    // }
 
 });
 
 // RESET button handler
 resetBtn.addEventListener("click", () => {
 
-    clearInterval(tickInterval);
-    isRunning = false;
-    isWorkSession = true;
-    timeLeft = WORK_DURATION;
-    startBtn.textContent = "Start";
-    updateDisplay();
+    chrome.runtime.sendMessage( { type: "RESET_TIMER" });
+    setTimeout(syncWithBackground, 100);
+    // clearInterval(tickInterval);
+    // isRunning = false;
+    // isWorkSession = true;
+    // timeLeft = WORK_DURATION;
+    // startBtn.textContent = "Start";
+    // updateDisplay();
 
 });
 
@@ -195,4 +222,6 @@ ytVolume.addEventListener("input", () => {
 });
 
 // Initialise on loading - make sure timer shows the correct time on load
-updateDisplay();
+// updateDisplay();
+syncWithBackground();
+const syncInterval = setInterval(syncWithBackground, 1000);
