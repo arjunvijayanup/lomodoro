@@ -10,7 +10,7 @@ chrome.runtime.onMessage.addListener( (message) => {
     if (message.type === "PLAY_AUDIO") {
 
         audio.volume = message.volume / 100;
-        audio.play();
+        audio.play().catch(err => console.error("[Lomodoro] audio play failed:", err));
 
     }
 
