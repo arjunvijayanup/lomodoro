@@ -188,60 +188,64 @@ const stateReady = loadState();
 // Message listener for commands from popup.js
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
-    if (message.type === "START_TIMER") startTimer();
-    if (message.type === "PAUSE_TIMER") pauseTimer();
-    if (message.type === "RESET_TIMER") resetTimer();
+    stateReady.then( () => {
 
-    if (message.type === "PLAY_LOFI") {
+        if (message.type === "START_TIMER") startTimer();
+        if (message.type === "PAUSE_TIMER") pauseTimer();
+        if (message.type === "RESET_TIMER") resetTimer();
 
-        lofiPlaying = true;
-        saveState();
-        ensureOffScreen().then( () => {
+        if (message.type === "PLAY_LOFI") {
 
-            chrome.runtime.sendMessage({ target: "offscreen", type: "PLAY_AUDIO", volume: lofiVolume });
+            lofiPlaying = true;
+            saveState();
+            ensureOffScreen().then( () => {
+
+                chrome.runtime.sendMessage({ target: "offscreen", type: "PLAY_AUDIO", volume: lofiVolume });
+            
+            });
         
-        });
-    
-    }
+        }
 
-    if (message.type === "PAUSE_LOFI") {
+        if (message.type === "PAUSE_LOFI") {
 
-        lofiPlaying = false;
-        saveState();
-        ensureOffScreen().then( () => {
+            lofiPlaying = false;
+            saveState();
+            ensureOffScreen().then( () => {
 
-            chrome.runtime.sendMessage({ target: "offscreen", type: "PAUSE_AUDIO" });
+                chrome.runtime.sendMessage({ target: "offscreen", type: "PAUSE_AUDIO" });
+            
+            });
         
-        });
-    
-    }
+        }
 
-    if (message.type === "SET_VOLUME") {
+        if (message.type === "SET_VOLUME") {
 
-        lofiVolume = message.volume;
-        userVolume = message.volume;
-        saveState();
-        ensureOffScreen().then( () => {
+            lofiVolume = message.volume;
+            userVolume = message.volume;
+            saveState();
+            ensureOffScreen().then( () => {
 
-            chrome.runtime.sendMessage({ target: "offscreen", type: "SET_VOLUME", volume: lofiVolume });
+                chrome.runtime.sendMessage({ target: "offscreen", type: "SET_VOLUME", volume: lofiVolume });
+            
+            });
         
-        });
-    
-    }
+        }
 
-    if (message.type === "GET_STATE") {
+        if (message.type === "GET_STATE") {
 
-        sendResponse({
+            sendResponse({
 
-            isRunning,
-            isWorkSession,
-            timeLeft: getTimeLeft(),
-            lofiPlaying,
-            lofiVolume
+                isRunning,
+                isWorkSession,
+                timeLeft: getTimeLeft(),
+                lofiPlaying,
+                lofiVolume
 
-        });
+            });
 
-    }
+        }
+
+    });
 
     // Indication to chrome that responses can be asynchronous
     return true;
