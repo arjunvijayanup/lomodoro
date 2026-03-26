@@ -88,6 +88,19 @@ function updateDisplay(state) {
     sessionLabel.textContent = state.isWorkSession ? "Work Session" : "Rest Time";
     startBtn.textContent = state.isRunning ? "Pause" : "Start";
 
+    // Restoring audio UI
+    if (state.lofiPlaying !== undefined) {
+
+        ytPlayBtn.textContent = state.lofiPlaying ? "Pause" : "Play";
+
+    }
+
+    if (state.lofiVolume !== undefined) {
+
+        ytVolume.value = state.lofiVolume;
+
+    }
+
 }
 
 // Request background.js for current state and update display
@@ -152,7 +165,7 @@ startBtn.addEventListener("click", () => {
         }
         
         // Setting slight Delay to allow background update
-        setTimeout(syncWithBackground, 50);
+        setTimeout(syncWithBackground, 100);
 
     });
     // if(isRunning) {
@@ -191,34 +204,52 @@ resetBtn.addEventListener("click", () => {
 // Lofi media control
 // ======================================================================================
 
-let lofiPlaying = false;
+// let lofiPlaying = false;
 
-const lofiAudio = document.getElementById("lofi-audio");
+// const lofiAudio = document.getElementById("lofi-audio");
 
-lofiAudio.volume = ytVolume.value/100;
+// lofiAudio.volume = ytVolume.value/100;
 
 ytPlayBtn.addEventListener("click", () => {
 
-    if (lofiPlaying) {
+    chrome.runtime.sendMessage({ type: "GET_STATE" }, (response) => {
 
-        lofiAudio.pause();
-        ytPlayBtn.textContent = "Play";
-        lofiPlaying = false;
+        if (response && response.lofiPlaying) {
 
-    } else {
+            chrome.runtime.sendMessage({ type: "PAUSE_LOFI" });
 
-        lofiAudio.play();
-        ytPlayBtn.textContent = "Pause";
-        lofiPlaying = true;
+        } else {
 
-    }
+            chrome.runtime.sendMessage({ type: "PLAY_LOFI" });
+
+        }
+
+        setTimeout(syncWithBackground, 100);
+
+    });
+
+    // if (lofiPlaying) {
+
+    //     lofiAudio.pause();
+    //     ytPlayBtn.textContent = "Play";
+    //     lofiPlaying = false;
+
+    // } else {
+
+    //     lofiAudio.play();
+    //     ytPlayBtn.textContent = "Pause";
+    //     lofiPlaying = true;
+
+    // }
 
 });
 
 // Volume slider
 ytVolume.addEventListener("input", () => {
     // Convert 0-100 slider value to 0.0-1.0 for audio element
-    lofiAudio.volume = ytVolume.value / 100;
+    // lofiAudio.volume = ytVolume.value / 100;
+    chrome.runtime.sendMessage({ type: "SET_VOLUME", volume: parseInt(ytVolume.value) });
+
 });
 
 // Initialise on loading - make sure timer shows the correct time on load

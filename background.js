@@ -13,6 +13,8 @@ let isRunning = false;
 let isWorkSession = true;
 let timeLeft = WORK_DURATION;
 let startTime = null; 
+let lofiPlaying = false;
+let lofiVolume = 50;
 
 // Timer Controls //
 function startTimer() {
@@ -65,6 +67,20 @@ function getTimeLeft() {
 
 }
 
+async function ensureOffScreen() {
+
+    if (await chrome.offscreen.hasDocument()) return;
+
+    await chrome.offscreen.createDocument({
+
+        url: "offscreen.html",
+        reasons: ["AUDIO_PLAYBACK"],
+        justification: "Playing lofi audio stream in the background"
+
+    });
+
+}
+
 function sessionEnd() {
 
     //pauseTimer();
@@ -110,7 +126,7 @@ function saveState() {
 
     chrome.storage.local.set({
 
-        timerState: { isRunning, isWorkSession, timeLeft, startTime }
+        timerState: { isRunning, isWorkSession, timeLeft, startTime, lofiPlaying, lofiVolume }
 
     });
 
@@ -126,10 +142,20 @@ async function loadState() {
         isWorkSession = result.timerState.isWorkSession;
         timeLeft = result.timerState.timeLeft;
         startTime = result.timerState.startTime ?? null;
+        lofiPlaying = result.timerState.lofiPlaying ?? false;
+        lofiVolume = result.timerState.lofiVolume ?? 50;
 
         if (isRunning) {
 
             chrome.alarms.create("timerTick", { periodInMinutes: 1 });
+
+        }
+
+        if (lofiPlaying) {
+
+            await ensureOffScreen();
+
+            chrome.runtime.sendMessage({ target: "offscreen", type: "PLAY_AUDIO", volume: lofiVolume });
 
         }
 
@@ -147,13 +173,51 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === "PAUSE_TIMER") pauseTimer();
     if (message.type === "RESET_TIMER") resetTimer();
 
+    if (message.type === "PLAY_LOFI") {
+
+        lofiPlaying = true;
+        saveState();
+        ensureOffScreen().then( () => {
+
+            chrome.runtime.sendMessage({ target: "offscreen", type: "PLAY_AUDIO", volume: lofiVolume });
+        
+        });
+    
+    }
+
+    if (message.type === "PAUSE_LOFI") {
+
+        lofiPlaying = false;
+        saveState();
+        ensureOffScreen().then( () => {
+
+            chrome.runtime.sendMessage({ target: "offscreen", type: "PAUSE_AUDIO" });
+        
+        });
+    
+    }
+
+    if (message.type === "SET_VOLUME") {
+
+        lofiVolume = message.volume;
+        saveState();
+        ensureOffScreen().then( () => {
+
+            chrome.runtime.sendMessage({ target: "offscreen", type: "SET_VOLUME", volume: lofiVolume });
+        
+        });
+    
+    }
+
     if (message.type === "GET_STATE") {
 
         sendResponse({
 
             isRunning,
             isWorkSession,
-            timeLeft: getTimeLeft()
+            timeLeft: getTimeLeft(),
+            lofiPlaying,
+            lofiVolume
 
         });
 

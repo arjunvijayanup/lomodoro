@@ -13,7 +13,8 @@
     "permissions": [
         "storage",
         "alarms",
-        "notifications"
+        "notifications",
+        "offscreen"
     ],
     "icons": {
         "48": "icons/icon48.png",
