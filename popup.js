@@ -6,54 +6,8 @@ const sessionLabel = document.getElementById("session-label");
 const timerDisplay = document.getElementById("timer-display");
 const startBtn = document.getElementById("start-btn");
 const resetBtn = document.getElementById("reset-btn");
-const panelYoutube = document.getElementById("panel-youtube");
-const panelAmbient = document.getElementById("panel-ambient");
-const panelSpotify = document.getElementById("panel-spotify");
-const tabYoutube = document.getElementById("tab-youtube");
-const tabAmbient = document.getElementById("tab-ambient");
-const tabSpotify = document.getElementById("tab-spotify");
 const ytPlayBtn = document.getElementById("yt-play-btn");
 const ytVolume = document.getElementById("yt-volume");
-
-// Tab switching and highlighting
-function switchTab(tabName) {
-
-    // Initializing tabs as inactive
-    tabYoutube.classList.remove("active");
-    tabAmbient.classList.remove("active");
-    tabSpotify.classList.remove("active");
-    
-    // Initializing panels as hidden
-    panelYoutube.classList.add("hidden");
-    panelAmbient.classList.add("hidden");
-    panelSpotify.classList.add("hidden");
-
-    // Highlighting correct tab and show corresponding panel
-    if (tabName === "youtube") {
-
-        tabYoutube.classList.add("active");
-        panelYoutube.classList.remove("hidden");
-
-    } else if (tabName === "ambient") {
-
-        tabAmbient.classList.add("active");
-        panelAmbient.classList.remove("hidden");
-
-    } else if (tabName === "spotify") {
-
-        tabSpotify.classList.add("active");
-        panelSpotify.classList.remove("hidden");
-        
-    }
-
-}
-
-
-// addEventListener() logic for tab buttons
-tabYoutube.addEventListener("click", () => switchTab("youtube"));
-tabAmbient.addEventListener("click", () => switchTab("ambient"));
-tabSpotify.addEventListener("click", () => switchTab("spotify"));
-
 
 // ======================================================================================
 // Pomodoro Timer Logic

@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lomodoro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="popup.css" />
   </head>
   <body>
@@ -25,43 +28,14 @@
         <button class="btn btn-secondary" id="reset-btn">Reset</button>
       </div>
 
-      <!-- Music source tabs -->
-      <div class="tabs">
-        <button class="tab active" id="tab-youtube">Lofi Girl</button>
-        <button class="tab" id="tab-ambient">Ambient</button>
-        <button class="tab" id="tab-spotify">Spotify</button>
-      </div>
+      <div class="divider"></div>
 
-      <!-- YouTube panel (visible by default) -->
-      <div class="panel" id="panel-youtube">
-        <p class="panel-desc">Lofi stream</p>
+      <div class="lofi-section">
+        <p class="lofi-label">LoFi Stream</p>
         <div class="music-controls">
-          <button class="btn btn-music" id="yt-play-btn">Play</button>
+          <button class="btn btn-music" id="yt-play-btn">PLAY</button>
           <input type="range" id="yt-volume" min="0" max="100" value="50" />
         </div>
-      </div>
-
-      <!-- Ambient panel (hidden by default) -->
-      <div class="panel hidden" id="panel-ambient">
-        <p class="panel-desc">Mix ambient sounds</p>
-        <div class="ambient-row">
-          <span>Rain</span>
-          <input type="range" class="ambient-vol" id="vol-rain" min="0" max="100" value="0" />
-        </div>
-        <div class="ambient-row">
-          <span>Ocean</span>
-          <input type="range" class="ambient-vol" id="vol-ocean" min="0" max="100" value="0" />
-        </div>
-        <div class="ambient-row">
-          <span>Brown noise</span>
-          <input type="range" class="ambient-vol" id="vol-noise" min="0" max="100" value="0" />
-        </div>
-      </div>
-
-      <!-- Spotify panel (hidden by default) -->
-      <div class="panel hidden" id="panel-spotify">
-        <p class="panel-desc">Spotify (Premium required)</p>
-        <button class="btn btn-primary" id="spotify-connect-btn">Connect Spotify</button>
       </div>
 
     </div>

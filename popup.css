@@ -7,10 +7,10 @@
 
 body {
   width: 320px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background-color: #1a1a2e;
-  color: #eaeaea;
-  padding: 20px;
+  font-family: 'Share Tech Mono', monospace;
+  background-color: #000;
+  color: #fff;
+  padding: 28px 24px;
 }
 
 /* Main container */
@@ -18,140 +18,114 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 20px;
 }
 
 /* App title */
 .app-title {
-  font-size: 20px;
-  font-weight: 600;
-  color: #a78bfa;
-  letter-spacing: 1px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: #444;
+  letter-spacing: 8px;
 }
 
 /* Session label (Work/Break) */
 .session-label {
-  font-size: 13px;
-  color: #9ca3af;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: #444;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 4px;
 }
 
 /* Big countdown timer */
 .timer-display {
+  font-family: 'Orbitron', sans-serif;
   font-size: 64px;
   font-weight: 700;
-  color: #ffffff;
-  letter-spacing: 2px;
+  color: #fff;
+  letter-spacing: 4px;
   font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 40px rgba(255, 255, 255, 0.12);
 }
 
 /* Timer buttons row */
 .timer-controls {
   display: flex;
-  gap: 12px;
+  gap: 10px;
+  width: 100%;
 }
 
 /* Base button style */
 .btn {
-  padding: 10px 24px;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
+  font-family: 'Share Tech Mono', monospace;
+  padding: 10px 20px;
+  border: 1px solid #fff;
+  border-radius: 0px;
+  background: transparent;
+  color: #fff;
+  font-size: 11px;
+  letter-spacing: 3px;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: background 0.15s, color 0.15s;
+  text-transform: uppercase;
 }
 
 .btn:hover {
   opacity: 0.85;
+  background: #fff;
+  color: #000;
 }
 
 .btn-primary {
-  background-color: #7c3aed;
-  color: #ffffff;
+  flex: 1;
 }
 
 .btn-secondary {
-  background-color: #374151;
-  color: #d1d5db;
+  border-color: #2a2a2a;
+  color: #3a3a3a;
+}
+
+.btn-secondary:hover {
+  background: #2a2a2a;
+  color: #fff;
+  border-color: #2a2a2a;
 }
 
 .btn-music {
-  background-color: #374151;
-  color: #d1d5db;
-  padding: 8px 20px;
+  flex-shrink: 0;
+  padding: 8px 16px;
+  font-size: 11px;
 }
 
-/* Tab row */
-.tabs {
-  display: flex;
-  gap: 8px;
+.divider {
   width: 100%;
+  height: 1px;
+  background: #111;
 }
 
-.tab {
-  flex: 1;
-  padding: 8px;
-  border: 1px solid #374151;
-  border-radius: 8px;
-  background: transparent;
-  color: #9ca3af;
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.tab.active {
-  background-color: #7c3aed;
-  color: #ffffff;
-  border-color: #7c3aed;
-}
-
-/* Panels */
-.panel {
+.lofi-section {
   width: 100%;
-  background-color: #16213e;
-  border-radius: 12px;
-  padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.panel.hidden {
-  display: none;
+.lofi-label {
+  font-size: 10px;
+  color: #333;
+  letter-spacing: 4px;
 }
 
-.panel-desc {
-  font-size: 12px;
-  color: #6b7280;
-  text-align: center;
-}
-
-/* Music controls row */
 .music-controls {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-/* Volume sliders */
 input[type="range"] {
   flex: 1;
-  accent-color: #7c3aed;
-}
-
-/* Ambient sound rows */
-.ambient-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 13px;
-  color: #d1d5db;
-}
-
-.ambient-row span {
-  width: 80px;
-  flex-shrink: 0;
+  accent-color: #fff;
+  cursor: pointer;
 }
