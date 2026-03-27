@@ -1,6 +1,6 @@
 # Lomodoro
 
-A Chrome extension that combines a Pomodoro timer with a lofi audio stream. The timer runs continuously in the background — closing the popup does not pause it — and the audio stream persists independently of the popup's lifecycle.
+A Chrome extension that combines a Pomodoro timer with a lofi audio stream. The timer runs continuously in the background -- closing the popup does not pause it — and the audio stream persists independently of the popup's lifecycle.
 
 ---
 
