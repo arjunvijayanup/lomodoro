@@ -1,6 +1,6 @@
 # Lomodoro
 
-A Chrome extension that combines a Pomodoro timer with a lofi audio stream. The timer runs continuously in the background -- closing the popup does not pause it — and the audio stream persists independently of the popup's lifecycle.
+A Chrome extension that combines a Pomodoro timer with a lofi audio stream. The timer runs continuously in the background - closing the popup does not pause it - and the audio stream persists independently of the popup's lifecycle.
 
 ---
 
@@ -31,7 +31,7 @@ The popup is a thin display layer. It polls `background.js` every second for the
 
 `chrome.alarms` has a minimum interval of roughly one minute, so the timer does not decrement on each alarm tick. Instead:
 
-- When the timer starts, `startTime = Date.now()` is recorded and a one-shot alarm is scheduled at `delayInMinutes: timeLeft / 60` — the exact moment the session should end.
+- When the timer starts, `startTime = Date.now()` is recorded and a one-shot alarm is scheduled at `delayInMinutes: timeLeft / 60` - the exact moment the session should end.
 - The real-time countdown displayed in the popup is computed on every poll as `timeLeft - Math.floor((Date.now() - startTime) / 1000)`.
 - When the alarm fires, `getTimeLeft() <= 0` triggers `sessionEnd()`, which flips the session type, resets the countdown, and immediately calls `startTimer()` to schedule the next alarm.
 
@@ -39,7 +39,7 @@ If the service worker is terminated and restarted (which Chrome does aggressivel
 
 ### Audio
 
-Chrome MV3 service workers cannot play audio directly. Audio is handled by an offscreen document — a hidden, persistent HTML page that Chrome keeps alive independently of the popup.
+Chrome MV3 service workers cannot play audio directly. Audio is handled by an offscreen document - a hidden, persistent HTML page that Chrome keeps alive independently of the popup.
 
 - `ensureOffScreen()` creates the offscreen document lazily the first time audio is needed, using a singleton Promise to prevent race conditions if called concurrently.
 - `background.js` sends `PLAY_AUDIO`, `PAUSE_AUDIO`, and `SET_VOLUME` messages to the offscreen document.
@@ -49,8 +49,8 @@ Chrome MV3 service workers cannot play audio directly. Audio is handled by an of
 
 Two volume values are tracked separately:
 
-- `userVolume` — the value the user set via the slider. Never modified automatically.
-- `lofiVolume` — the value actually sent to the audio element. Set to `userVolume` during work sessions and ducked to 15 during breaks.
+- `userVolume` - the value the user set via the slider. Never modified automatically.
+- `lofiVolume` - the value actually sent to the audio element. Set to `userVolume` during work sessions and ducked to 15 during breaks.
 
 When a session ends, `lofiVolume` is updated before `saveState()` so the correct volume is restored if the service worker restarts mid-session.
 
@@ -85,7 +85,7 @@ All inter-context communication uses `chrome.runtime.sendMessage`.
 | Type | Payload | Description |
 |---|---|---|
 | `PLAY_AUDIO` | `volume` | Sets volume and calls `audio.play()` |
-| `PAUSE_AUDIO` | — | Calls `audio.pause()` |
+| `PAUSE_AUDIO` | - | Calls `audio.pause()` |
 | `SET_VOLUME` | `volume` | Updates `audio.volume` without starting playback |
 
 All messages to `offscreen.js` include `target: "offscreen"` so the listener can ignore unrelated broadcasts.
