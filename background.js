@@ -2,8 +2,8 @@
 // Timer state and controls of chrome.alarms
 // Current state is read and commands are sent here from popup.js
 
-const WORK_DURATION = 1500; // 25 x 60 seconds
-const BREAK_DURATION = 300; // 5 x 60 seconds
+let workDuration = 1500; // 25 x 60 seconds
+let breakDuration = 300; // 5 x 60 seconds
 
 // ======================================================================================
 // Timer State
@@ -11,7 +11,7 @@ const BREAK_DURATION = 300; // 5 x 60 seconds
 
 let isRunning = false;
 let isWorkSession = true;
-let timeLeft = WORK_DURATION;
+let timeLeft = workDuration;
 let startTime = null; 
 let lofiPlaying = false;
 let lofiVolume = 50;
@@ -49,7 +49,7 @@ function resetTimer() {
 
     pauseTimer();
 
-    timeLeft = WORK_DURATION;
+    timeLeft = workDuration;
     isWorkSession = true;
     isRunning = false;
     saveState();
@@ -98,7 +98,7 @@ function sessionEnd() {
     chrome.alarms.clear("timerTick");
     
     isWorkSession = !isWorkSession;
-    timeLeft = isWorkSession? WORK_DURATION : BREAK_DURATION;
+    timeLeft = isWorkSession? workDuration : breakDuration;
 
     // Volume ducking update for saveState() capture
     if (lofiPlaying) lofiVolume = isWorkSession ? userVolume : 15;
@@ -122,7 +122,7 @@ function sessionEnd() {
         type: "basic",
         iconUrl: "icons/icon128.png",
         title: isWorkSession? "Rest over. Get back to work!" : "Work sesh done. Take a break!",
-        message: isWorkSession? "25 minute work session starting!" : "5 minute break starting."
+        message: isWorkSession? `${workDuration / 60} minute work session starting!` : `${breakDuration / 60} minute break starting.`
 
     });
 
@@ -148,7 +148,9 @@ function saveState() {
 
     chrome.storage.local.set({
 
-        timerState: { isRunning, isWorkSession, timeLeft, startTime, lofiPlaying, lofiVolume, userVolume }
+        timerState: { isRunning, isWorkSession, timeLeft, startTime, 
+            lofiPlaying, lofiVolume, userVolume, 
+            workDuration, breakDuration }
 
     });
 
@@ -167,6 +169,8 @@ async function loadState() {
         lofiPlaying = result.timerState.lofiPlaying ?? false;
         lofiVolume = result.timerState.lofiVolume ?? 50;
         userVolume = result.timerState.userVolume ?? 50;
+        workDuration  = result.timerState.workDuration  ?? 1500;
+        breakDuration = result.timerState.breakDuration ?? 300;
 
         if (isRunning) {
 
@@ -236,6 +240,21 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         
         }
 
+        if (message.type === "SET_DURATIONS") {
+
+            workDuration = message.workDuration;
+            breakDuration = message.breakDuration;
+
+            if (!isRunning) {
+
+                timeLeft = isWorkSession ? workDuration : breakDuration;
+
+            }
+
+            saveState();
+
+        }
+
         if (message.type === "GET_STATE") {
 
             sendResponse({
@@ -244,7 +263,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 isWorkSession,
                 timeLeft: getTimeLeft(),
                 lofiPlaying,
-                lofiVolume
+                lofiVolume,
+                workDuration,
+                breakDuration
 
             });
 

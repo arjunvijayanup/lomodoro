@@ -141,3 +141,138 @@ input[type="range"] {
 .attribution:hover {
   color: #777;
 }
+
+/* ── Header bar ── */
+.header-bar {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-settings {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #555;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  transition: color 0.15s;
+}
+.btn-settings:hover { color: #aaa; }
+
+/* ── Overlay ── */
+.settings-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.settings-overlay.is-open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ── Settings panel card ── */
+.settings-panel {
+  background: #111;
+  border: 1px solid #333;
+  padding: 20px;
+  width: 272px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  transform: translateY(8px);
+  transition: transform 0.2s ease;
+}
+.settings-overlay.is-open .settings-panel {
+  transform: translateY(0);
+}
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.settings-title {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: #777;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+.btn-settings-close {
+  background: transparent;
+  border: none;
+  color: #555;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 2px;
+  line-height: 1;
+  transition: color 0.15s;
+}
+.btn-settings-close:hover { color: #aaa; }
+
+/* ── Duration picker ── */
+.duration-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.picker-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: #777;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin: 0;
+}
+.picker-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.picker-value {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 2px;
+  min-width: 80px;
+  text-align: center;
+}
+.btn-arrow {
+  font-size: 22px;
+  padding: 6px 12px;
+  border-color: #444;
+  color: #888;
+  letter-spacing: 0;
+  line-height: 1;
+}
+.btn-arrow:hover { background: #333; color: #fff; border-color: #888; }
+
+.picker-row-fine {
+  justify-content: center;
+  gap: 12px;
+}
+.btn-picker-step {
+  font-size: 10px;
+  padding: 6px 12px;
+  border-color: #333;
+  color: #666;
+  letter-spacing: 2px;
+}
+.btn-picker-step:hover { background: #333; color: #fff; border-color: #555; }

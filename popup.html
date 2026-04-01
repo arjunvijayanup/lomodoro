@@ -13,8 +13,13 @@
 
     <div class="container">
 
-      <!-- Header -->
-      <h1 class="app-title">Lomodoro</h1>
+      <div class="header-bar">
+
+        <!-- Header -->
+        <h1 class="app-title">Lomodoro</h1>
+        <button class="btn-settings" id="settings-btn" aria-label="Settings">&#9881;</button>
+
+      </div>
 
       <!-- Session label: shows "Work" or "Break" -->
       <p class="session-label" id="session-label">Work Session</p>
@@ -39,7 +44,44 @@
       </div>
 
       <a class="attribution" href="https://ilovemusic.de" target="_blank">powered by ilovemusic.de</a>
+      
+      <div class="settings-overlay" id="settings-overlay">
+        <div class="settings-panel">
 
+          <div class="settings-header">
+            <span class="settings-title">Settings</span>
+            <button class="btn-settings-close" id="settings-close-btn" aria-label="Close">&#10005;</button>
+          </div>
+
+          <div class="duration-picker">
+            <p class="picker-label">Session length</p>
+            <div class="picker-row">
+              <button class="btn btn-arrow" id="work-dec-btn">&#8249;</button>
+              <span class="picker-value" id="work-value">25 min.</span>
+              <button class="btn btn-arrow" id="work-inc-btn">&#8250;</button>
+            </div>
+            <div class="picker-row picker-row-fine">
+              <button class="btn btn-picker-step" id="work-minus5-btn">&minus; 5 min.</button>
+              <button class="btn btn-picker-step" id="work-plus5-btn">+ 5 min.</button>
+            </div>
+          </div>
+
+          <div class="duration-picker">
+            <p class="picker-label">Break length</p>
+            <div class="picker-row">
+              <button class="btn btn-arrow" id="break-dec-btn">&#8249;</button>
+              <span class="picker-value" id="break-value">5 min.</span>
+              <button class="btn btn-arrow" id="break-inc-btn">&#8250;</button>
+            </div>
+            <div class="picker-row picker-row-fine">
+              <button class="btn btn-picker-step" id="break-minus5-btn">&minus; 5 min.</button>
+              <button class="btn btn-picker-step" id="break-plus5-btn">+ 5 min.</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    
     </div>
 
     <script src="popup.js"></script>
