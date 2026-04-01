@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy Policy — Lomodoro</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        background: #000;
+        color: #fff;
+        font-family: 'Share Tech Mono', monospace;
+        padding: 60px 24px;
+        max-width: 640px;
+        margin: 0 auto;
+        line-height: 1.8;
+      }
+      h1 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        letter-spacing: 8px;
+        color: #888;
+        text-transform: uppercase;
+        margin-bottom: 40px;
+      }
+      h2 {
+        font-size: 10px;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: #777;
+        margin: 32px 0 12px;
+      }
+      p {
+        font-size: 13px;
+        color: #ccc;
+      }
+      .meta {
+        font-size: 10px;
+        color: #555;
+        letter-spacing: 2px;
+        margin-bottom: 48px;
+      }
+      ul {
+        margin: 12px 0 0 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      li {
+        font-size: 13px;
+        color: #ccc;
+      }
+      li strong {
+        color: #fff;
+        letter-spacing: 1px;
+      }
+      a { color: #888; }
+      a:hover { color: #fff; }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <h1>Lomodoro</h1>
+    <p class="meta">Privacy Policy &mdash; Last updated: 1 April 2026</p>
+
+    <p>Lomodoro does not collect, transmit, store, or share any personal data.</p>
+
+    <h2>Local storage</h2>
+    <p>All user preferences (timer durations, volume) are stored exclusively on your local device using Chrome's built-in <code>chrome.storage.local</code> API and are never sent to any server.</p>
+
+    <h2>Audio stream</h2>
+    <p>The extension connects to <a href="https://play.ilovemusic.de" target="_blank">https://play.ilovemusic.de</a> to stream audio when you activate the lofi player. No user data is sent as part of this connection.</p>
+
+    <h2>Permissions</h2>
+    <p>Lomodoro requests the following Chrome permissions:</p>
+    <ul>
+      <li><strong>storage</strong> — Saves timer durations, volume level, and session state locally on your device. No data leaves your machine.</li>
+      <li><strong>alarms</strong> — Schedules a one-shot alarm to fire at the exact moment each session ends. Required because Chrome suspends service workers between events.</li>
+      <li><strong>notifications</strong> — Displays a desktop notification when a work or break session ends, so you are alerted even when Chrome is not in focus.</li>
+      <li><strong>offscreen</strong> — Creates a hidden background page to host the audio element. Required to keep the lofi stream playing after the popup is closed.</li>
+    </ul>
+
+    <h2>Contact</h2>
+    <p>arjun.vijayanup@gmail.com</p>
+  </body>
+</html>
