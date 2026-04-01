@@ -6,7 +6,8 @@ A Chrome extension that combines a Pomodoro timer with a lofi audio stream. The 
 
 ## Features
 
-- 25-minute work sessions alternating with 5-minute breaks, auto-advancing on completion
+- Configurable work sessions (default 25 min) alternating with breaks (default 5 min), auto-advancing on completion
+- Customisable session and break durations via the settings panel (⚙ icon, top-right of the popup)
 - Desktop notification at each session boundary
 - Lofi audio stream with volume control, ducked automatically to 15% during breaks and restored to your set level on work sessions
 - Timer and audio state survive browser restarts
@@ -56,7 +57,7 @@ When a session ends, `lofiVolume` is updated before `saveState()` so the correct
 
 ### State persistence
 
-All timer and audio state is written to `chrome.storage.local` on every change via `saveState()`. On service worker startup, `loadState()` reads this state and reconstructs the running condition, including rescheduling the alarm and resuming audio playback if it was active.
+All timer and audio state — including user-configured session and break durations — is written to `chrome.storage.local` on every change via `saveState()`. On service worker startup, `loadState()` reads this state and reconstructs the running condition, including rescheduling the alarm and resuming audio playback if it was active.
 
 ### Race condition fix
 
@@ -72,13 +73,14 @@ All inter-context communication uses `chrome.runtime.sendMessage`.
 
 | Type | Description |
 |---|---|
-| `GET_STATE` | Returns `{ isRunning, isWorkSession, timeLeft, lofiPlaying, lofiVolume }` |
+| `GET_STATE` | Returns `{ isRunning, isWorkSession, timeLeft, lofiPlaying, lofiVolume, workDuration, breakDuration }` |
 | `START_TIMER` | Starts or resumes the timer |
 | `PAUSE_TIMER` | Pauses the timer and records remaining time |
-| `RESET_TIMER` | Stops the timer and resets to a 25-minute work session |
+| `RESET_TIMER` | Stops the timer and resets to the configured work session duration |
 | `PLAY_LOFI` | Starts audio playback |
 | `PAUSE_LOFI` | Pauses audio playback |
 | `SET_VOLUME` | Sets `userVolume` and `lofiVolume`, forwards to offscreen |
+| `SET_DURATIONS` | Sets `workDuration` and `breakDuration` (in seconds), persists to storage, and immediately updates `timeLeft` if the timer is not running |
 
 **background.js to offscreen.js**
 
@@ -118,7 +120,11 @@ icons/              Extension icons (48px, 128px).
 
 ---
 
-## Installation (unpacked)
+## Installation
+
+Install directly from the [Chrome Web Store](#) *(link to be added post-publication)*.
+
+### Install unpacked (for development)
 
 1. Clone or download this repository.
 2. Open Chrome and navigate to `chrome://extensions`.
@@ -139,4 +145,3 @@ The lofi stream is provided by [ilovemusic.de](https://ilovemusic.de). The strea
 - Chrome clamps `chrome.alarms` to a minimum interval. The one-shot alarm may fire a few seconds late on slow machines, though this does not affect countdown accuracy since time is computed from `Date.now()`.
 - Desktop notifications on macOS require Chrome notification permissions to be enabled in System Settings > Notifications > Google Chrome.
 - The volume slider fires on every drag pixel (`input` event). This is intentional for responsiveness but sends frequent messages to the service worker. Low priority for optimisation.
-- The Ambient Sounds and Spotify panels visible in the UI are not yet wired up.
