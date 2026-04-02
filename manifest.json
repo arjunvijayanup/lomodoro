@@ -3,7 +3,7 @@
     "name": "Lomodoro",
     "version": "1.0.0",
     "minimum_chrome_version": "109",
-    "description": "Pomodoro timer with Lofi and ambient Sounds",
+    "description": "Pomodoro timer with built-in lofi stream.",
     "action": {
         "default_popup": "popup.html",
         "default_icon": "icons/icon48.png"
